@@ -13,6 +13,8 @@ print(df.head())
 X = df[df.columns[1:-1]]
 Y = df[df.columns[-1]]
 
+# Estadísticas descriptivas de las variables
+print(X.describe())
 # Estadísticas descriptivas de los precios de venta
 print(Y.describe())
 
@@ -61,8 +63,8 @@ print("MAE:", MAE)
 print("MSE:", MSE)
 print("SMSE:", SMSE)
 
-# Eliminación de la variable X1
-X_2 = X.drop("X1 transaction date", axis=1)
+# Eliminación de la variable X6
+X_2 = X.drop("X6 longitude", axis=1)
 X_2
 
 # Nuevo test
@@ -89,3 +91,19 @@ print(mse_scores)
 rmse_scores = np.sqrt(mse_scores)
 print(rmse_scores)
 print(rmse_scores.mean())
+
+# Statsmodel
+x_train, x_test, y_train, y_test = train_test_split(X, Y, random_state=0)
+# Agregar la columna de 1
+x_train = sm.add_constant(x_train)
+# Modelo de regresión
+model = sm.OLS(y_train, x_train).fit()
+print(model.summary())
+
+# Sacando X6
+x_train, x_test, y_train, y_test = train_test_split(X, Y, random_state=0)
+# Agregar la columna de 1
+x_train = sm.add_constant(x_train)
+# Modelo de regresión
+model = sm.OLS(y_train, x_train).fit()
+print(model.summary())
