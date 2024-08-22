@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 import seaborn as sns
+from sklearn import metrics
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.linear_model import LinearRegression
+import statsmodels.api as sm
 
 df = pd.read_csv("real_estate_valuation_data_set.csv")
 print(df.head())
@@ -27,3 +31,52 @@ colum = X.columns
 print(sns.pairplot(df, x_vars=colum[0:2], y_vars="Y house price of unit area", height=7, kind="reg"))
 print(sns.pairplot(df, x_vars=colum[2:4], y_vars="Y house price of unit area", height=7, kind="reg"))
 print(sns.pairplot(df, x_vars=colum[4:], y_vars="Y house price of unit area", height=7, kind="reg"))
+
+# Modelo de regresión
+x_train, x_test, y_train, y_test = train_test_split(X, Y, random_state=0)
+
+print(x_train.shape)
+print(y_train.shape)
+print(x_test.shape)
+print(y_test.shape)
+
+linreg = LinearRegression()
+linreg.fit(x_train,y_train)
+intercepto = linreg.intercept_
+print("Intercepto:", intercepto)
+coeficientes = linreg.coef_
+print("Coeficientes:", coeficientes)
+
+# Predicción
+y_pred = linreg.predict(x_test)
+
+# Error absoluto medio
+MAE = metrics.mean_absolute_error(y_test,y_pred)
+# Error cuadrático medio
+MSE = metrics.mean_squared_error(y_test,y_pred)
+# Raiz MSE
+SMSE = np.sqrt(MSE)
+
+print("MAE:", MAE)
+print("MSE:", MSE)
+print("SMSE:", SMSE)
+
+# Eliminación de la variable X1
+X_2 = X.drop("X1 transaction date", axis=1)
+X_2
+
+# Nuevo test
+x_train, x_test, y_train, y_test = train_test_split(X_2, Y, random_state=0)
+linreg.fit(x_train,y_train)
+intercepto = linreg.intercept_
+print("Intercepto:", intercepto)
+coeficientes = linreg.coef_
+print("Coeficientes:", coeficientes)
+y_pred = linreg.predict(x_test)
+MAE = metrics.mean_absolute_error(y_test,y_pred)
+MSE = metrics.mean_squared_error(y_test,y_pred)
+SMSE = np.sqrt(MSE)
+
+print("MAE:", MAE)
+print("MSE:", MSE)
+print("SMSE:", SMSE)
