@@ -80,3 +80,12 @@ SMSE = np.sqrt(MSE)
 print("MAE:", MAE)
 print("MSE:", MSE)
 print("SMSE:", SMSE)
+
+# Validación cruzada
+scores = cross_val_score(linreg, X, Y, cv=5, scoring="neg_mean_squared_error")
+mse_scores = - scores
+print(mse_scores)
+# Raiz de los MSE
+rmse_scores = np.sqrt(mse_scores)
+print(rmse_scores)
+print(rmse_scores.mean())
